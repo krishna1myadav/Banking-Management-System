@@ -1,5 +1,6 @@
 package BankingManagementSystem;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ public class User {
         }
         String register_query = "INSERT INTO User(full_name, email, password) VALLUES(?, ?, ?)";
         try{
-            PreparedStatement preparedStatement = connction.prepareStatement(register_query);
+            PreparedStatement preparedStatement = connection.prepareStatement(register_query);
             preparedStatement.setString(1, full_name);
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, password);
@@ -58,7 +59,32 @@ public class User {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return email;
+            }else{
+                return null;
+            }
 
+        }catch(SQLException e){
+            e.printStackTrace();
         }
+        return null;
+    }
+
+    public boolean user_exist(String email){
+        String query = "SELECT * FROM User WHERE email = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return true;
+            }else{
+                return false;
+            }
+    }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }
