@@ -1,5 +1,6 @@
 package BankingManagementSystem;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -47,5 +48,17 @@ public class User {
 
     public String login(){
         scanner.nextLine();
+        System.out.print(" Email: ");
+        String email = scanner.nextLine();
+        System.out.print(" Password: ");
+        String password = scanner.nextLine();
+        String login_query = "SELECT * FROM User WHERE email = ? AND password = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(login_query);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+        }
     }
 }
