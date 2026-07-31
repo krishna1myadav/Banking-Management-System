@@ -1,6 +1,7 @@
 package BankingManagementSystem;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Accounts {
@@ -30,8 +31,22 @@ public class Accounts {
                 preparedStatement.setString(2, full_name);
                 preparedStatement.setString(3, email);
                 preparedStatement.setString(4, balance);
+                preparedStatement.setDouble(5, security_pin);
+                int rowsAffected = preparedStatement.executeUpdate();
+                if(rowsAffected > 0){
+                    return account_number;
+                }else{
+                    throw new RuntimeException("Account Creation Failed!!");
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
             }
         }
+        throw new RuntimeException("Account Already Exist!!");
+    }
+
+    public long getAccount_number(String email){
+
     }
 
 }
