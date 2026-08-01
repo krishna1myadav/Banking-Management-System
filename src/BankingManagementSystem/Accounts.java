@@ -1,6 +1,8 @@
 package BankingManagementSystem;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -47,6 +49,23 @@ public class Accounts {
 
     public long getAccount_number(String email){
 
+    }
+
+    public boolean account_exist(String email){
+        String query = "SECLECT account_number from Accounts WHERE email = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email );
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch( SQLException e ){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
