@@ -1,9 +1,6 @@
 package BankingManagementSystem;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Accounts {
@@ -49,6 +46,23 @@ public class Accounts {
 
     public long getAccount_number(String email){
 
+    }
+
+    private long generateAccountNumber(){
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT account_number from Accounts ORDER BY account_number DESC LIMIT 1");
+            if(resultSet.next()){
+                long last_account_number = resultSet.getLong("account_number");
+                return last_account_number + 1;
+            }else{
+                return 10000100;
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return 10000100;
     }
 
     public boolean account_exist(String email){
