@@ -1,6 +1,7 @@
 package BankingManagementSystem;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -24,6 +25,7 @@ public class AccountManager {
         try{
             connection.setAutoCommit(false);
             if(account_number != 0){
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Accounts WHERE security_pin = ? ");
 
             }
         }
