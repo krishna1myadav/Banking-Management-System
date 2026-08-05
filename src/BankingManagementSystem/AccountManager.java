@@ -123,7 +123,30 @@ public class AccountManager {
                 preparedStatement.setString(2, security_pin );
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-                if()
+                if(resultSet.next()){
+                    double current_balance = resultSet.getDouble("balance");
+                    if( amount <= current_balance ){
+                        String debit_query = "UPDATE Accounts SET balance = balance - ? WHERE account_number = ?";
+                        String credit_query = "UPDATE Accounts SET balance = balance + ? WHERE account_number = ?";
+                        PreparedStatement creditPreparedStatement = connection.prepareStatement(credit_query);
+                        PreparedStatement debitPreparedStatement = connection.prepareStatement(debit_query);
+                        creditPreparedStatement.setDouble(1, amount);
+                        creditPreparedStatement.setLong(2, receiver_account_number);
+                        debitPreparedStatement.setDouble(1, amount);
+                        debitPreparedStatement.setLong(2, sender_account_number);
+                        int rowsAffected1 = debitPreparedStatement.executeUpdate();
+                        int rowsAffected2 = creditPreparedStatement.executeUpdate();
+                        if( rowsAffected1 > 0 && rowsAffected2 > 0 ){
+                            System.out.println("Transaction Successful!");
+                            System.out.println("Rs. "+amount+"Transferred Successfully");
+                            connection.commit();
+                            connection.setAutoCommit(true);
+                            return;
+                        }else{
+                            System.out.println("Transction Failed!!");
+                        }
+                    }
+                }
             }
         }
     }
