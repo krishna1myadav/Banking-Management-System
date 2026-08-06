@@ -15,7 +15,7 @@ public class AccountManager {
         this.scanner = scanner;
     }
 
-    public void create_money(long account_number)throws SQLException{
+    public void credit_money(long account_number)throws SQLException{
         scanner.nextLine();
         System.out.print("Enter Amount: ");
         double amount = scanner.nextDouble();
