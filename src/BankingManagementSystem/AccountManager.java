@@ -15,7 +15,7 @@ public class AccountManager {
         this.scanner = scanner;
     }
 
-    public void create_money(long account_number)throw SQLException{
+    public void create_money(long account_number)throws SQLException{
         scanner.nextLine();
         System.out.print("Enter Amount: ");
         double amount = scanner.nextDouble();
@@ -168,6 +168,15 @@ public class AccountManager {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT balance FROM Accounts WHERE account_number = ? AND security_pin = ?");
             preparedStatement.setLong(1, account_number);
             preparedStatement.setString(2, security_pin);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                double balance = resultSet.getDouble("balance");
+                System.out.println("Balance: "+balance);
+            }else{
+                System.out.println("Invalid Pin!!");
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
         }
     }
 
